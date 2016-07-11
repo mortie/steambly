@@ -1,3 +1,5 @@
 build
 .gradle
 run
+steamblysrc
+.DS_Store
