@@ -1,0 +1,16 @@
+[
+{
+  "modid": "steambly",
+  "name": "Steambly",
+  "description": "A mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Martin Dørum Nygaard", "Bendik Dørum Nygaard"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
