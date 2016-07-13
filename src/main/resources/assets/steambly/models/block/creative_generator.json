@@ -1,0 +1,8 @@
+{
+	"parent": "steambly:block/block",
+	"textures": {
+		"top":    "steambly:blocks/creative_generator_top",
+		"bottom": "steambly:blocks/creative_generator_bottom",
+		"sides":  "steambly:blocks/creative_generator_sides"
+	}
+}

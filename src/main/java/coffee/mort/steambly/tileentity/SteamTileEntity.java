@@ -33,6 +33,12 @@ abstract public class SteamTileEntity extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
+		if (!getWorld().isRemote) {
+			onServerUpdate();
+		}
+	}
+
+	public void onServerUpdate() {
 		rebalance();
 	}
 

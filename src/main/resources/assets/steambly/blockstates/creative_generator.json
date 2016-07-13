@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"normal": { "model": "steambly:creative_generator" },
+		"inventory": { "model": "steambly:creative_generator" }
+	}
+}

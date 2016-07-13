@@ -12,10 +12,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.IBlockAccess;
 
-abstract public class SteamBlock extends SteamblyBlockContainer {
+abstract public class SteamBlock extends SteamblyBlock {
 	SteamBlock(String name) {
 		super(Material.IRON, name);
 	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) { return true; }
 
 	public static boolean canBlockConnect(
 			IBlockAccess world,

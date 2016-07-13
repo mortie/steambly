@@ -80,3 +80,7 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+compileJava {
+	options.compilerArgs += ['-Xlint:deprecation']
+}

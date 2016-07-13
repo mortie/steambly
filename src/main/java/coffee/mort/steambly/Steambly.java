@@ -1,6 +1,6 @@
 package coffee.mort.steambly;
 
-import coffee.mort.steambly.block.SteamblyBlockContainer;
+import coffee.mort.steambly.block.SteamblyBlock;
 import coffee.mort.steambly.block.SteamBlock;
 import coffee.mort.steambly.block.CreativeGeneratorBlock;
 import coffee.mort.steambly.tileentity.SteamTileEntity;
@@ -26,7 +26,7 @@ public class Steambly {
 	public static final String MODID = "steambly";
 	public static final String VERSION = "0.0.0";
 
-	private static void addRenderer(RenderItem ri, SteamblyBlockContainer block) {
+	private static void addRenderer(RenderItem ri, SteamblyBlock block) {
 		ri.getItemModelMesher().register(
 			Item.getItemFromBlock(block),
 			0,
@@ -35,7 +35,7 @@ public class Steambly {
 	}
 
 	// Blocks
-	public static SteamblyBlockContainer blockCreativeGenerator;
+	public static SteamblyBlock blockCreativeGenerator;
 
 	// Creative tab
 	public static final CreativeTabs creativeTab = new CreativeTabs(Steambly.MODID) {
