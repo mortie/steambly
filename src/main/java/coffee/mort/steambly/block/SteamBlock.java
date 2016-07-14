@@ -76,10 +76,8 @@ abstract public class SteamBlock extends SteamblyBlock {
 			if (te == null)
 				return false;
 
-			System.out.println("is remote: "+world.isRemote);
 			if (!world.isRemote) {
 				player.addChatComponentMessage(new TextComponentString(
-					"["+getName()+"] "+
 					"Volume: "+te.getSteamVolume()+", "+
 					"Steam: "+te.getSteamAmount()+", "+
 					"Pressure: "+te.getPressure()));

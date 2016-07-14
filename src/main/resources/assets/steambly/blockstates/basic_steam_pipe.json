@@ -1,17 +1,20 @@
 {
 	"forge_marker": 1,
+
 	"defaults": {
 		"uvlock": true,
 		"model": "steambly:pipe",
 
 		"textures": {
 			"pipe": "steambly:blocks/basic_pipe",
-			"pipe_connector": "steambly:blocks/basic_pipe_connector"
+			"pipe_connector": "steambly:blocks/basic_pipe_connector",
+			"pipe_connector_up": "steambly:blocks/basic_pipe_connector_up",
+			"particle": "steambly:blocks/basic_pipe"
 		}
 	},
 
 	"variants": {
-		"inventory": { "model": "steambly:pipe_connector" },
+		"inventory": { "model": "steambly:pipe" },
 
 		"up": {
 			"true": {

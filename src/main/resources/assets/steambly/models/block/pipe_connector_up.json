@@ -2,14 +2,14 @@
 	"elements": [
 		{
 			"from": [7, 0, 7],
-			"to": [9, 8, 9],
+			"to": [9, 7, 9],
 			"faces": {
-				"down":  { "texture": "pipe_connector" },
-				"up":    { "texture": "pipe_connector" },
-				"north": { "texture": "pipe_connector" },
-				"south": { "texture": "pipe_connector" },
-				"west":  { "texture": "pipe_connector" },
-				"east":  { "texture": "pipe_connector" }
+				"down":  { "texture": "pipe_connector_up" },
+				"up":    { "texture": "pipe_connector_up" },
+				"north": { "texture": "pipe_connector_up" },
+				"south": { "texture": "pipe_connector_up" },
+				"west":  { "texture": "pipe_connector_up" },
+				"east":  { "texture": "pipe_connector_up" }
 			}
 		}
 	]

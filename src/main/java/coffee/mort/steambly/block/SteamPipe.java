@@ -33,6 +33,7 @@ abstract public class SteamPipe extends SteamBlock {
 			.withProperty(EAST, false));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public IBlockState getActualState(
 			IBlockState state,
@@ -57,11 +58,13 @@ abstract public class SteamPipe extends SteamBlock {
 		return state;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return 0;
@@ -77,5 +80,17 @@ abstract public class SteamPipe extends SteamBlock {
 			EAST,
 			WEST
 		});
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
 	}
 }

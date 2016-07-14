@@ -12,7 +12,9 @@ import net.minecraft.nbt.NBTTagCompound;
 abstract public class SteamTileEntity extends TileEntity implements ITickable {
 	private int steamAmount;
 
-	public SteamTileEntity() {}
+	public SteamTileEntity() {
+		steamAmount = getSteamVolume();
+	}
 
 	abstract public int getSteamVolume();
 
@@ -27,8 +29,6 @@ abstract public class SteamTileEntity extends TileEntity implements ITickable {
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		steamAmount = nbt.getInteger("steamAmount");
-		if (steamAmount == 0)
-			steamAmount = getSteamVolume();
 	}
 
 	@Override
