@@ -6,10 +6,12 @@ import coffee.mort.steambly.tileentity.SteamTileEntity;
 
 // Blocks
 import coffee.mort.steambly.block.CreativeGeneratorBlock;
+import coffee.mort.steambly.block.ConveyorBeltBlock;
 import coffee.mort.steambly.block.BasicSteamPipe;
 
 // Tile Entities
 import coffee.mort.steambly.tileentity.CreativeGeneratorTileEntity;
+import coffee.mort.steambly.tileentity.ConveyorBeltTileEntity;
 import coffee.mort.steambly.tileentity.BasicSteamPipeTileEntity;
 
 import net.minecraft.client.Minecraft;
@@ -41,6 +43,7 @@ public class Steambly {
 
 	// Blocks
 	public static SteamblyBlock blockCreativeGenerator;
+	public static SteamblyBlock blockConveyorBelt;;
 	public static SteamblyBlock blockBasicSteamPipe;
 
 	// Creative tab
@@ -58,10 +61,13 @@ public class Steambly {
 		GameRegistry.registerTileEntity(
 			CreativeGeneratorTileEntity.class, "creative_generator_te");
 		GameRegistry.registerTileEntity(
+			ConveyorBeltTileEntity.class, "conveyor_belt_te");
+		GameRegistry.registerTileEntity(
 			BasicSteamPipeTileEntity.class, "basic_steam_pipe_te");
 
 		// Create block singletons
 		blockCreativeGenerator = new CreativeGeneratorBlock();
+		blockConveyorBelt = new ConveyorBeltBlock();
 		blockBasicSteamPipe = new BasicSteamPipe();
 	}
 
@@ -73,6 +79,7 @@ public class Steambly {
 			RenderItem ri = Minecraft.getMinecraft().getRenderItem();
 
 			addRenderer(ri, blockCreativeGenerator);
+			addRenderer(ri, blockConveyorBelt);
 			addRenderer(ri, blockBasicSteamPipe);
 		}
 	}

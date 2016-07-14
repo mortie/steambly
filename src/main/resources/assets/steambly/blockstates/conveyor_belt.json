@@ -1,0 +1,17 @@
+{
+	"forge_marker": 1,
+
+	"defaults": {
+		"model": "steambly:conveyor_belt",
+
+		"textures": {
+			"sides": "minecraft:blocks/stone",
+			"middle": "steambly:blocks/conveyor_belt_middle",
+			"particle": "minecraft:blocks/stone"
+		}
+	},
+	"variants": {
+		"normal": { "model": "steambly:conveyor_belt" },
+		"inventory": { "model": "steambly:conveyor_belt" }
+	}
+}

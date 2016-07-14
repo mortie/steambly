@@ -4,6 +4,7 @@ import coffee.mort.steambly.block.SteamBlock;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyBool;
@@ -56,6 +57,38 @@ abstract public class SteamPipe extends SteamBlock {
 			.withProperty(EAST, east);
 
 		return state;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public AxisAlignedBB getBoundingBox(
+			IBlockState state,
+			IBlockAccess world, 
+			BlockPos pos) {
+
+		state = this.getActualState(state, world, pos);
+
+		double minX = 0.4D;
+		double minY = 0.4D;
+		double minZ = 0.4D;
+		double maxX = 0.6D;
+		double maxY = 0.6D;
+		double maxZ = 0.6D;
+
+		if (state.getValue(UP))
+			maxY = 1D;
+		if (state.getValue(DOWN))
+			minY = 0D;
+		if (state.getValue(NORTH))
+			minZ = 0D;
+		if (state.getValue(SOUTH))
+			maxZ = 1D;
+		if (state.getValue(WEST))
+			minX = 0D;
+		if (state.getValue(EAST))
+			maxX = 1D;
+
+		return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 
 	@SuppressWarnings("deprecation")
