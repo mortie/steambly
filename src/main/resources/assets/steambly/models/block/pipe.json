@@ -1,0 +1,23 @@
+{
+	"display": {
+		"thirdperson": {
+			"rotation": [10, -45, 170],
+			"translation": [0, 1.5, -2.75],
+			"scale": [1, 1, 1]
+		}
+	},
+	"elements": [
+		{
+			"from": [7, 7, 7],
+			"to": [9, 9, 9],
+			"faces": {
+				"down":  { "texture": "#pipe" },
+				"up":    { "texture": "#pipe" },
+				"north": { "texture": "#pipe" },
+				"south": { "texture": "#pipe" },
+				"west":  { "texture": "#pipe" },
+				"east":  { "texture": "#pipe" }
+			}
+		}
+	]
+}

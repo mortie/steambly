@@ -1,13 +1,20 @@
 package coffee.mort.steambly.block;
 
+import coffee.mort.steambly.tileentity.SteamTileEntity;
+
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.IBlockAccess;
@@ -48,5 +55,39 @@ abstract public class SteamBlock extends SteamblyBlock {
 			connected.add(EnumFacing.EAST);
 
 		return connected;
+	}
+
+	/*
+	 * Print steam info if right clicked with an empty hand
+	 */
+	@Override
+	public boolean onBlockActivated(
+			World world,
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer player,
+			EnumHand hand,
+			@Nullable ItemStack heldItem,
+			EnumFacing side,
+			float hitX, float hitY, float hitZ) {
+
+		if (heldItem == null) {
+			SteamTileEntity te = (SteamTileEntity)world.getTileEntity(pos);
+			if (te == null)
+				return false;
+
+			System.out.println("is remote: "+world.isRemote);
+			if (!world.isRemote) {
+				player.addChatComponentMessage(new TextComponentString(
+					"["+getName()+"] "+
+					"Volume: "+te.getSteamVolume()+", "+
+					"Steam: "+te.getSteamAmount()+", "+
+					"Pressure: "+te.getPressure()));
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 }

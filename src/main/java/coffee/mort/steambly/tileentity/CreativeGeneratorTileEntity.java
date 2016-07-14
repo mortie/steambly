@@ -11,7 +11,6 @@ public class CreativeGeneratorTileEntity extends SteamTileEntity {
 	@Override
 	public void onServerUpdate() {
 		addSteam(1);
-		System.out.println("Have pressure "+getPressure());
 		super.onServerUpdate();
 	}
 }

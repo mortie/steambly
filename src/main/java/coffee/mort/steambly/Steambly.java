@@ -2,9 +2,15 @@ package coffee.mort.steambly;
 
 import coffee.mort.steambly.block.SteamblyBlock;
 import coffee.mort.steambly.block.SteamBlock;
-import coffee.mort.steambly.block.CreativeGeneratorBlock;
 import coffee.mort.steambly.tileentity.SteamTileEntity;
+
+// Blocks
+import coffee.mort.steambly.block.CreativeGeneratorBlock;
+import coffee.mort.steambly.block.BasicSteamPipe;
+
+// Tile Entities
 import coffee.mort.steambly.tileentity.CreativeGeneratorTileEntity;
+import coffee.mort.steambly.tileentity.BasicSteamPipeTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
@@ -28,14 +34,14 @@ public class Steambly {
 
 	private static void addRenderer(RenderItem ri, SteamblyBlock block) {
 		ri.getItemModelMesher().register(
-			Item.getItemFromBlock(block),
-			0,
+			Item.getItemFromBlock(block), 0,
 			new ModelResourceLocation(
 				Steambly.MODID + ":" + block.getName(), "inventory"));
 	}
 
 	// Blocks
 	public static SteamblyBlock blockCreativeGenerator;
+	public static SteamblyBlock blockBasicSteamPipe;
 
 	// Creative tab
 	public static final CreativeTabs creativeTab = new CreativeTabs(Steambly.MODID) {
@@ -51,9 +57,12 @@ public class Steambly {
 		// Register tile entities
 		GameRegistry.registerTileEntity(
 			CreativeGeneratorTileEntity.class, "creative_generator_te");
+		GameRegistry.registerTileEntity(
+			BasicSteamPipeTileEntity.class, "basic_steam_pipe_te");
 
 		// Create block singletons
 		blockCreativeGenerator = new CreativeGeneratorBlock();
+		blockBasicSteamPipe = new BasicSteamPipe();
 	}
 
 	@EventHandler
@@ -64,6 +73,7 @@ public class Steambly {
 			RenderItem ri = Minecraft.getMinecraft().getRenderItem();
 
 			addRenderer(ri, blockCreativeGenerator);
+			addRenderer(ri, blockBasicSteamPipe);
 		}
 	}
 }

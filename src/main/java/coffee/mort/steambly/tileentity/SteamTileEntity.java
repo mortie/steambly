@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 abstract public class SteamTileEntity extends TileEntity implements ITickable {
 	private int steamAmount;
 
-	SteamTileEntity() {}
+	public SteamTileEntity() {}
 
 	abstract public int getSteamVolume();
 

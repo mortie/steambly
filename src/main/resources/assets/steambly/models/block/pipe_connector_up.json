@@ -1,0 +1,16 @@
+{
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 8, 9],
+			"faces": {
+				"down":  { "texture": "pipe_connector" },
+				"up":    { "texture": "pipe_connector" },
+				"north": { "texture": "pipe_connector" },
+				"south": { "texture": "pipe_connector" },
+				"west":  { "texture": "pipe_connector" },
+				"east":  { "texture": "pipe_connector" }
+			}
+		}
+	]
+}
