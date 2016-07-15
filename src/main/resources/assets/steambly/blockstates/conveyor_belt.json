@@ -2,16 +2,18 @@
 	"forge_marker": 1,
 
 	"defaults": {
-		"model": "steambly:conveyor_belt",
+		"model": "steambly:conveyor_belt_straight",
 
 		"textures": {
-			"sides": "minecraft:blocks/stone",
+			"sides": "steambly:blocks/conveyor_belt_sides",
+			"sides_top": "steambly:blocks/conveyor_belt_sides_top",
+			"sides_bottom": "steambly:blocks/conveyor_belt_sides_bottom",
 			"middle": "steambly:blocks/conveyor_belt_middle",
-			"particle": "minecraft:blocks/stone"
+			"particle": "steambly:blocks/conveyor_belt_middle"
 		}
 	},
 	"variants": {
-		"normal": { "model": "steambly:conveyor_belt" },
-		"inventory": { "model": "steambly:conveyor_belt" }
+		"normal": { "model": "steambly:conveyor_belt_straight" },
+		"inventory": { "model": "steambly:conveyor_belt_straight" }
 	}
 }

@@ -3,3 +3,4 @@ build
 run
 steamblysrc
 .DS_Store
+src/main/resources/assets/steambly/textures/

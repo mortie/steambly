@@ -2,17 +2,20 @@
 	"forge_marker": 1,
 
 	"defaults": {
-		"model": "steambly:block",
+		"model": "minecraft:cube",
 
 		"textures": {
-			"top": "steambly:blocks/creative_generator_top",
-			"bottom": "steambly:blocks/creative_generator_bottom",
-			"sides": "steambly:blocks/creative_generator_sides",
+			"up": "steambly:blocks/creative_generator_top",
+			"down": "steambly:blocks/creative_generator_bottom",
+			"north": "steambly:blocks/creative_generator_sides",
+			"south": "steambly:blocks/creative_generator_sides",
+			"east": "steambly:blocks/creative_generator_sides",
+			"west": "steambly:blocks/creative_generator_sides",
 			"particle": "steambly:blocks/creative_generator_sides"
 		}
 	},
 	"variants": {
-		"normal": { "model": "steambly:block" },
-		"inventory": { "model": "steambly:block" }
+		"normal": { "model": "minecraft:cube" },
+		"inventory": { "model": "minecraft:cube" }
 	}
 }

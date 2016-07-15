@@ -80,6 +80,8 @@ q = Queue()
 def exportdir(d):
     S = SRC+"/"+d
     D = DST+"/"+d
+    if not os.path.exists(D):
+        os.makedirs(D)
 
     for f in os.listdir(D):
         os.remove(D+"/"+f)
