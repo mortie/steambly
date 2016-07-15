@@ -3,6 +3,7 @@
 import os
 import subprocess
 import shutil
+import json
 
 # Not beautiful, but I don't know any better ways to convert
 # xcf to png in a script
@@ -14,26 +15,67 @@ def convert(src, dst):
     pdb.gimp_file_save(img, layer, dst, dst)
     pdb.gimp_image_delete(img)
 
-convert("{{SRC}}", "{{DST}}")
+for f in {{FILES}}:
+    convert(f[0], f[1])
+
+pdb.gimp_quit(0)
 """
 
 SRC="textures"
 DST="src/main/resources/assets/steambly/textures"
 
-def export(src, dst):
-    print(src)
-    print(">>> "+dst)
-    subprocess.Popen([
-        "gimp",
-        "--no-interface",
-        "--batch-interpreter=python-fu-eval",
-        "-b",
-        GIMPSCRIPT.replace("{{SRC}}", src).replace("{{DST}}", dst)])
+class OprExport:
+    def __init__(self, src, dst):
+        self.src = src
+        self.dst = dst
 
-def cp(src, dst):
-    print(src)
-    print(">>> "+dst)
-    shutil.copy2(src, dst)
+class OprCopy:
+    def __init__(self, src, dst):
+        self.src = src
+        self.dst = dst
+
+class Queue:
+    def __init__(self):
+        self.exports = [];
+        self.copys = [];
+
+    def append(self, opr):
+        if (isinstance(opr, OprExport)):
+            self.exports.append(opr)
+        elif (isinstance(opr, OprCopy)):
+            self.copys.append(opr)
+        else:
+            print("ERROR: Invalid opr "+type(opr))
+
+    def runExports(self):
+        exportstr = "[ "
+        first = True
+        for o in self.exports:
+            print(o.src)
+            print(">>> "+o.dst)
+            if not first:
+                exportstr += ", "
+            exportstr += "[ '"+o.src+"', '"+o.dst+"' ]"
+            first = False
+        exportstr += " ]"
+        script = GIMPSCRIPT.replace("{{FILES}}", exportstr)
+        subprocess.check_output([
+            "gimp",
+            "--no-interface",
+            "--batch-interpreter=python-fu-eval",
+            "-b", script])
+
+    def runCopys(self):
+        for o in self.copys:
+            print(o.src)
+            print(">>> "+o.dst)
+            shutil.copy2(o.src, o.dst)
+
+    def run(self):
+        self.runExports()
+        self.runCopys()
+
+q = Queue()
 
 def exportdir(d):
     S = SRC+"/"+d
@@ -44,11 +86,13 @@ def exportdir(d):
 
     for f in os.listdir(S):
         if f.endswith(".png.mcmeta"):
-            cp(S+"/"+f, D+"/"+f);
+            q.append(OprCopy(S+"/"+f, D+"/"+f));
         elif f.endswith(".xcf"):
             png = f.replace(".xcf", ".png")
-            export(S+"/"+f, D+"/"+png)
+            q.append(OprExport(S+"/"+f, D+"/"+png))
         else:
             print("ERROR: Bad file name: "+f)
 
 exportdir("blocks")
+
+q.run();
