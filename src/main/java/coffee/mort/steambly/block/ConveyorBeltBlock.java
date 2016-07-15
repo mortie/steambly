@@ -30,4 +30,16 @@ public class ConveyorBeltBlock extends SteamBlock {
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new ConveyorBeltTileEntity();
 	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 }
