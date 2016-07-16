@@ -59,11 +59,14 @@ class Queue:
             first = False
         exportstr += " ]"
         script = GIMPSCRIPT.replace("{{FILES}}", exportstr)
-        subprocess.check_output([
-            "gimp",
-            "--no-interface",
-            "--batch-interpreter=python-fu-eval",
-            "-b", script])
+        args = [
+                "--no-interface",
+                "--batch-interpreter=python-fu-eval",
+                "-b", script]
+        try:
+            subprocess.check_output(["gimp"] + args)
+        except:
+            subprocess.check_output(["/Applications/GIMP.app/Contents/MacOS/GIMP"] + args)
 
     def runCopys(self):
         for o in self.copys:
