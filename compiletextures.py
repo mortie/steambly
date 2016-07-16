@@ -61,6 +61,7 @@ class Queue:
         script = GIMPSCRIPT.replace("{{FILES}}", exportstr)
         args = [
                 "--no-interface",
+                "--no-data", "--no-fonts",
                 "--batch-interpreter=python-fu-eval",
                 "-b", script]
         try:
