@@ -60,8 +60,8 @@ class Queue:
         exportstr += " ]"
         script = GIMPSCRIPT.replace("{{FILES}}", exportstr)
         subprocess.check_output([
-            "gimp",
-            "--no-interface",
+            "gimp", "--no-interface",
+            "--no-data", "--no-fonts",
             "--batch-interpreter=python-fu-eval",
             "-b", script])
 

@@ -8,12 +8,92 @@
 			"sides": "steambly:blocks/conveyor_belt_sides",
 			"sides_top": "steambly:blocks/conveyor_belt_sides_top",
 			"sides_bottom": "steambly:blocks/conveyor_belt_sides_bottom",
-			"middle": "steambly:blocks/conveyor_belt_middle",
-			"particle": "steambly:blocks/conveyor_belt_middle"
+			"middle_straight": "steambly:blocks/conveyor_belt_middle_straight",
+			"middle_left": "steambly:blocks/conveyor_belt_middle_left",
+			"middle_right": "steambly:blocks/conveyor_belt_middle_left",
+			"particle": "steambly:blocks/conveyor_belt_middle_straight"
 		}
 	},
 	"variants": {
-		"normal": { "model": "steambly:conveyor_belt_straight" },
-		"inventory": { "model": "steambly:conveyor_belt_straight" }
+		"inventory": { "model": "steambly:conveyor_belt_straight" },
+
+		"facing=north,turning=straight": {
+			"model": "steambly:conveyor_belt_straight"
+		},
+		"facing=north,turning=left": {
+			"model": "steambly:conveyor_belt_left"
+		},
+		"facing=north,turning=right": {
+			"model": "steambly:conveyor_belt_right"
+		},
+		"facing=north,turning=up": {
+			"model": "steambly:conveyor_belt_straight"
+		},
+		"facing=north,turning=down": {
+			"model": "steambly:conveyor_belt_straight"
+		},
+
+		"facing=south,turning=straight": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 180
+		},
+		"facing=south,turning=left": {
+			"model": "steambly:conveyor_belt_left",
+			"y": 180
+		},
+		"facing=south,turning=right": {
+			"model": "steambly:conveyor_belt_right",
+			"y": 180
+		},
+		"facing=south,turning=up": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 180
+		},
+		"facing=south,turning=down": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 180
+		},
+
+		"facing=west,turning=straight": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 270
+		},
+		"facing=west,turning=left": {
+			"model": "steambly:conveyor_belt_left",
+			"y": 270
+		},
+		"facing=west,turning=right": {
+			"model": "steambly:conveyor_belt_right",
+			"y": 270
+		},
+		"facing=west,turning=up": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 270
+		},
+		"facing=west,turning=down": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 270
+		},
+
+		"facing=east,turning=straight": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 90
+		},
+		"facing=east,turning=left": {
+			"model": "steambly:conveyor_belt_left",
+			"y": 90
+		},
+		"facing=east,turning=right": {
+			"model": "steambly:conveyor_belt_right",
+			"y": 90
+		},
+		"facing=east,turning=up": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 90
+		},
+		"facing=east,turning=down": {
+			"model": "steambly:conveyor_belt_straight",
+			"y": 90
+		}
 	}
 }
