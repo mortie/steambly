@@ -10,7 +10,7 @@
 			"sides_bottom": "steambly:blocks/conveyor_belt_sides_bottom",
 			"middle_straight": "steambly:blocks/conveyor_belt_middle_straight",
 			"middle_left": "steambly:blocks/conveyor_belt_middle_left",
-			"middle_right": "steambly:blocks/conveyor_belt_middle_left",
+			"middle_right": "steambly:blocks/conveyor_belt_middle_right",
 			"particle": "steambly:blocks/conveyor_belt_middle_straight"
 		}
 	},

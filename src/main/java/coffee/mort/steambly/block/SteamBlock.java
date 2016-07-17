@@ -71,7 +71,7 @@ abstract public class SteamBlock extends SteamblyBlock {
 			EnumFacing side,
 			float hitX, float hitY, float hitZ) {
 
-		if (heldItem == null) {
+		if (heldItem == null && player.isSneaking()) {
 			SteamTileEntity te = (SteamTileEntity)world.getTileEntity(pos);
 			if (te == null)
 				return false;
