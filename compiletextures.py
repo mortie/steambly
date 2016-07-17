@@ -100,5 +100,6 @@ def exportdir(d):
             print("ERROR: Bad file name: "+f)
 
 exportdir("blocks")
+exportdir("items")
 
 q.run();

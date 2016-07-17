@@ -1,13 +1,19 @@
 package coffee.mort.steambly;
 
 import coffee.mort.steambly.block.SteamblyBlock;
-import coffee.mort.steambly.block.SteamBlock;
+import coffee.mort.steambly.item.SteamblyItem;
 import coffee.mort.steambly.tileentity.SteamTileEntity;
 
 // Blocks
 import coffee.mort.steambly.block.CreativeGeneratorBlock;
 import coffee.mort.steambly.block.ConveyorBeltBlock;
 import coffee.mort.steambly.block.BasicSteamPipe;
+
+// Items
+import coffee.mort.steambly.item.ChromiumIngotItem;
+import coffee.mort.steambly.item.HydrosteelIngotItem;
+import coffee.mort.steambly.item.NichromeIngotItem;
+import coffee.mort.steambly.item.NickelIngotItem;
 
 // Tile Entities
 import coffee.mort.steambly.tileentity.CreativeGeneratorTileEntity;
@@ -41,10 +47,23 @@ public class Steambly {
 				Steambly.MODID + ":" + block.getName(), "inventory"));
 	}
 
+	private static void addRenderer(RenderItem ri, SteamblyItem item) {
+		ri.getItemModelMesher().register(
+			item, 0,
+			new ModelResourceLocation(
+				Steambly.MODID + ":" + item.getName(), "inventory"));
+	}
+
 	// Blocks
 	public static SteamblyBlock blockCreativeGenerator;
-	public static SteamblyBlock blockConveyorBelt;;
+	public static SteamblyBlock blockConveyorBelt;
 	public static SteamblyBlock blockBasicSteamPipe;
+
+	// Items
+	public static SteamblyItem itemChromiumIngot;
+	public static SteamblyItem itemHydrosteelIngot;
+	public static SteamblyItem itemNichromeIngot;
+	public static SteamblyItem itemNickelIngot;
 
 	// Creative tab
 	public static final CreativeTabs creativeTab = new CreativeTabs(Steambly.MODID) {
@@ -69,6 +88,12 @@ public class Steambly {
 		blockCreativeGenerator = new CreativeGeneratorBlock();
 		blockConveyorBelt = new ConveyorBeltBlock();
 		blockBasicSteamPipe = new BasicSteamPipe();
+
+		// Create item singletons
+		itemChromiumIngot = new ChromiumIngotItem();
+		itemHydrosteelIngot = new HydrosteelIngotItem();
+		itemNichromeIngot = new NichromeIngotItem();
+		itemNickelIngot = new NickelIngotItem();
 	}
 
 	@EventHandler
@@ -78,9 +103,16 @@ public class Steambly {
 		if (event.getSide() == Side.CLIENT) {
 			RenderItem ri = Minecraft.getMinecraft().getRenderItem();
 
+			// Blocks
 			addRenderer(ri, blockCreativeGenerator);
 			addRenderer(ri, blockConveyorBelt);
 			addRenderer(ri, blockBasicSteamPipe);
+
+			// Items
+			addRenderer(ri, itemChromiumIngot);
+			addRenderer(ri, itemHydrosteelIngot);
+			addRenderer(ri, itemNichromeIngot);
+			addRenderer(ri, itemNickelIngot);
 		}
 	}
 }

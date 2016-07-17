@@ -26,7 +26,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventory {
-	private static final int moveItemTimeout = 20;
+	private static final int moveItemTimeout = 4;
 
 	private int moveItemCounter = moveItemTimeout;
 	private ItemStack[] slots = new ItemStack[6];
