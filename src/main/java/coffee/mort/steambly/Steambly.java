@@ -14,6 +14,10 @@ import coffee.mort.steambly.item.ChromiumIngotItem;
 import coffee.mort.steambly.item.HydrosteelIngotItem;
 import coffee.mort.steambly.item.NichromeIngotItem;
 import coffee.mort.steambly.item.NickelIngotItem;
+import coffee.mort.steambly.item.ChromiumPlateItem;
+import coffee.mort.steambly.item.HydrosteelPlateItem;
+import coffee.mort.steambly.item.NichromePlateItem;
+import coffee.mort.steambly.item.NickelPlateItem;
 
 // Tile Entities
 import coffee.mort.steambly.tileentity.CreativeGeneratorTileEntity;
@@ -64,6 +68,10 @@ public class Steambly {
 	public static SteamblyItem itemHydrosteelIngot;
 	public static SteamblyItem itemNichromeIngot;
 	public static SteamblyItem itemNickelIngot;
+	public static SteamblyItem itemChromiumPlate;
+	public static SteamblyItem itemHydrosteelPlate;
+	public static SteamblyItem itemNichromePlate;
+	public static SteamblyItem itemNickelPlate;
 
 	// Creative tab
 	public static final CreativeTabs creativeTab = new CreativeTabs(Steambly.MODID) {
@@ -94,6 +102,10 @@ public class Steambly {
 		itemHydrosteelIngot = new HydrosteelIngotItem();
 		itemNichromeIngot = new NichromeIngotItem();
 		itemNickelIngot = new NickelIngotItem();
+		itemChromiumPlate = new ChromiumPlateItem();
+		itemHydrosteelPlate = new HydrosteelPlateItem();
+		itemNichromePlate = new NichromePlateItem();
+		itemNickelPlate = new NickelPlateItem();
 	}
 
 	@EventHandler
@@ -112,6 +124,11 @@ public class Steambly {
 			addRenderer(ri, itemChromiumIngot);
 			addRenderer(ri, itemHydrosteelIngot);
 			addRenderer(ri, itemNichromeIngot);
+			addRenderer(ri, itemNickelIngot);
+			addRenderer(ri, itemChromiumPlate);
+			addRenderer(ri, itemHydrosteelPlate);
+			addRenderer(ri, itemNichromePlate);
+			addRenderer(ri, itemNickelPlate);
 			addRenderer(ri, itemNickelIngot);
 		}
 	}
