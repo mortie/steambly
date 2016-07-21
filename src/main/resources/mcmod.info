@@ -2,7 +2,7 @@
 {
   "modid": "steambly",
   "name": "Steambly",
-  "description": “Steampunk asemblymod.”,
+  "description": “Steampunk assemblymod.”,
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
