@@ -9,7 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
 
-abstract public class SteamTileEntity extends TileEntity implements ITickable {
+abstract public class SteamTileEntity extends SteamblyTileEntity implements ITickable {
 	private int steamAmount;
 
 	public SteamTileEntity() {
@@ -19,16 +19,16 @@ abstract public class SteamTileEntity extends TileEntity implements ITickable {
 	abstract public int getSteamVolume();
 
 	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		steamAmount = nbt.getInteger("steamAmount");
+	}
+
+	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setInteger("steamAmount", steamAmount);
 		return nbt;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
-		steamAmount = nbt.getInteger("steamAmount");
 	}
 
 	@Override

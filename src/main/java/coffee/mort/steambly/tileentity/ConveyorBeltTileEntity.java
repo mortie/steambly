@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.EnumFacing;
@@ -24,6 +25,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventory {
 	private static final int moveItemTimeout = 4;
@@ -32,6 +34,13 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	private ItemStack[] slots = new ItemStack[6];
 
 	public ConveyorBeltTileEntity() {}
+
+	@Override
+	public boolean shouldSyncToClient() {
+		return true;
+	}
+
+	public ItemStack[] getSlots() { return slots; }
 
 	private BlockPos getPosInFront() {
 		IBlockState state = getWorld().getBlockState(pos);
@@ -49,26 +58,43 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 		return pos.offset(facing);
 	}
 
-	private void visualizeItems() {
-		if (!getWorld().isRemote)
-			return;
+	public static class CustomRenderer extends TileEntitySpecialRenderer<ConveyorBeltTileEntity> {
+		public CustomRenderer() {}
 
-		for (int i = 0; i < slots.length; ++i) {
-			ItemStack stack = slots[i];
-			if (stack == null)
-				continue;
+		@Override
+		public void renderTileEntityAt(
+				ConveyorBeltTileEntity te,
+				double x, double y, double z,
+				float partialTicks, int destroyStage) {
 
-			// TODO: visualize item
+			ItemStack[] slots = te.getSlots();
+
+			for (int i = 0; i < slots.length; ++i) {
+				ItemStack s = slots[i];
+				if (s == null)
+					continue;
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+				Minecraft.getMinecraft().getRenderItem().renderItem(
+					s, ItemCameraTransforms.TransformType.GROUND);
+				GL11.glPopMatrix();
+			}
 		}
 	}
 
 	private void updateInventory() {
+		boolean moved = false;
 		for (int i = 1; i < slots.length; ++i) {
 			if (slots[i] != null && slots[i - 1] == null) {
+				moved = true;
 				slots[i - 1] = slots[i];
 				slots[i] = null;
 			}
 		}
+
+		if (moved)
+			syncToClient();
 	}
 
 	private void moveItems() {
@@ -77,6 +103,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 		if (stack == null)
 			return;
+
+		syncToClient();
 
 		boolean success = false;
 
@@ -128,14 +156,50 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	@Override
 	public void update() {
 		moveItemCounter -= 1;
-		if (moveItemCounter <= 0) {
+		if (moveItemCounter <= 0 && !getWorld().isRemote) {
 			moveItemCounter = moveItemTimeout;
 			updateInventory();
-			visualizeItems();
 			moveItems();
 		}
 
 		super.update();
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+
+		NBTTagList slotslist = nbt.getTagList("slots", 10);
+
+		for (int i = 0; i < slotslist.tagCount(); ++i) {
+			NBTTagCompound c = slotslist.getCompoundTagAt(i);
+
+			int j = c.getByte("slot") & 255;
+			if (j >= 0 && j < slots.length) {
+				slots[j] = ItemStack.loadItemStackFromNBT(c);
+			}
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+
+		NBTTagList slotslist = new NBTTagList();
+
+		for (int i = 0; i < slots.length; ++i) {
+			if (slots[i] == null)
+				continue;
+
+			NBTTagCompound c = new NBTTagCompound();
+			c.setByte("slot", (byte)i);
+			slots[i].writeToNBT(c);
+			slotslist.appendTag(c);
+		}
+
+		nbt.setTag("slots", slotslist);
+
+		return nbt;
 	}
 
 	@Override
@@ -168,6 +232,7 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 	@Override
 	public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
+		markDirty();
 		slots[slots.length - 1] = stack;
 	}
 

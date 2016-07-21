@@ -3,6 +3,7 @@ package coffee.mort.steambly;
 import coffee.mort.steambly.block.SteamblyBlock;
 import coffee.mort.steambly.item.SteamblyItem;
 import coffee.mort.steambly.tileentity.SteamTileEntity;
+import coffee.mort.steambly.proxy.CommonProxy;
 
 // Blocks
 import coffee.mort.steambly.block.CreativeGeneratorBlock;
@@ -36,13 +37,18 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 @Mod(modid = Steambly.MODID, version = Steambly.VERSION)
 public class Steambly {
 	public static final String MODID = "steambly";
 	public static final String VERSION = "0.0.0";
+
+	@SidedProxy(clientSide="coffee.mort.steambly.proxy.ClientProxy", serverSide="coffee.mort.steambly.proxy.CommonProxy")
+	public static CommonProxy proxy;
 
 	private static void addRenderer(RenderItem ri, SteamblyBlock block) {
 		ri.getItemModelMesher().register(
@@ -106,6 +112,9 @@ public class Steambly {
 		itemHydrosteelPlate = new HydrosteelPlateItem();
 		itemNichromePlate = new NichromePlateItem();
 		itemNickelPlate = new NickelPlateItem();
+
+		// Register tile entity special renderers
+		proxy.registerTESR();
 	}
 
 	@EventHandler

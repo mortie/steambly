@@ -152,14 +152,12 @@ public class ConveyorBeltBlock extends SteamBlock {
 			state = state.withProperty(FACING, EnumFacing.EAST);
 
 		int mod = meta % 4;
-		System.out.println("is mod "+mod);
 		if (mod == 1)
 			state = state.withProperty(TURNING, TurningType.LEFT);
 		else if (mod == 2)
 			state = state.withProperty(TURNING, TurningType.RIGHT);
 		else
 			state = state.withProperty(TURNING, TurningType.STRAIGHT);
-		System.out.println("is state "+state.getValue(TURNING).toString());
 
 		return state;
 	}
