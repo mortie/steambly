@@ -25,7 +25,7 @@ public class ConveyorBeltBlock extends SteamBlock {
 
 	protected static final AxisAlignedBB AABB = new AxisAlignedBB(
 		0D, 0D, 0D,
-		1D, 0.56D, 1D);
+		1D, 0.565D, 1D);
 
 	public ConveyorBeltBlock() {
 		super("conveyor_belt");

@@ -3,6 +3,7 @@ package coffee.mort.steambly.tileentity;
 import coffee.mort.steambly.block.ConveyorBeltBlock;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 import com.google.common.base.Optional;
 import org.lwjgl.opengl.GL11;
@@ -10,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.block.Block;
@@ -31,7 +33,7 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	private static final int moveItemTimeout = 4;
 
 	private int moveItemCounter = moveItemTimeout;
-	private ItemStack[] slots = new ItemStack[6];
+	public ItemStack[] slots = new ItemStack[8];
 
 	public ConveyorBeltTileEntity() {}
 
@@ -39,8 +41,6 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	public boolean shouldSyncToClient() {
 		return true;
 	}
-
-	public ItemStack[] getSlots() { return slots; }
 
 	private BlockPos getPosInFront() {
 		IBlockState state = getWorld().getBlockState(pos);
@@ -64,18 +64,49 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 		@Override
 		public void renderTileEntityAt(
 				ConveyorBeltTileEntity te,
-				double x, double y, double z,
+				double tx, double ty, double tz,
 				float partialTicks, int destroyStage) {
 
-			ItemStack[] slots = te.getSlots();
+			ItemStack[] slots = te.slots;
+			IBlockState state = te.getWorld().getBlockState(te.getPos());
+
+			ConveyorBeltBlock.TurningType turning =
+				(ConveyorBeltBlock.TurningType)state.getValue(ConveyorBeltBlock.TURNING);
+			EnumFacing facing = state.getValue(ConveyorBeltBlock.FACING);
 
 			for (int i = 0; i < slots.length; ++i) {
+				double x = tx;
+				double y = ty;
+				double z = tz;
+
 				ItemStack s = slots[i];
+
 				if (s == null)
 					continue;
 
+				if (turning == ConveyorBeltBlock.TurningType.STRAIGHT) {
+					double offset = (double)(i + 1) / (double)slots.length;
+
+					if (facing == EnumFacing.SOUTH) {
+						z = z + 1 - offset;
+						x += 0.5;
+					} else if (facing == EnumFacing.NORTH) {
+						z += offset;
+						x += 0.5;
+					} else if (facing == EnumFacing.EAST) {
+						x = x + 1 - offset;
+						z += 0.5;
+					} else if (facing == EnumFacing.WEST) {
+						x += offset;
+						z += 0.5;
+					}
+				} else {
+					x += 0.5;
+					z += 0.5;
+				}
+
 				GL11.glPushMatrix();
-				GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+				GL11.glTranslated(x, y + 0.5, z);
 				Minecraft.getMinecraft().getRenderItem().renderItem(
 					s, ItemCameraTransforms.TransformType.GROUND);
 				GL11.glPopMatrix();
@@ -103,8 +134,6 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 		if (stack == null)
 			return;
-
-		syncToClient();
 
 		boolean success = false;
 
@@ -151,6 +180,38 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 			getWorld().spawnEntityInWorld(dropped);
 		}
+
+		syncToClient();
+	}
+
+	private void captureDroppedItems() {
+		List<EntityItem> items = getWorld().<EntityItem>getEntitiesWithinAABB(
+			EntityItem.class, new AxisAlignedBB(
+				pos.getX() - 0.5D, pos.getY(), pos.getZ() - 0.5D,
+				pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D));
+
+		for (EntityItem item: items) {
+			ItemStack stack = item.getEntityItem().copy();
+			if (stack.stackSize == 0) {
+				item.setDead();
+				continue;
+			}
+
+			if (isItemValidForSlot(slots.length - 1, stack)) {
+				ItemStack istack = stack.copy();
+				istack.stackSize = 1;
+
+				if (stack.stackSize > 1) {
+					stack.stackSize -= 1;
+					item.setEntityItemStack(stack);
+				} else {
+					item.setDead();
+				}
+
+				setInventorySlotContents(slots.length - 1, istack);
+				return;
+			}
+		}
 	}
 
 	@Override
@@ -158,8 +219,10 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 		moveItemCounter -= 1;
 		if (moveItemCounter <= 0 && !getWorld().isRemote) {
 			moveItemCounter = moveItemTimeout;
-			updateInventory();
+
+			captureDroppedItems();
 			moveItems();
+			updateInventory();
 		}
 
 		super.update();
@@ -168,6 +231,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
+
+		clear();
 
 		NBTTagList slotslist = nbt.getTagList("slots", 10);
 
