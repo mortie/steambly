@@ -30,6 +30,9 @@ public abstract class SteamblyBlock extends Block {
 
 		setCreativeTab(Steambly.creativeTab);
 	}
+	public SteamblyBlock(String name) {
+		this(Material.IRON, name);
+	}
 
 	public String getName() { return name; }
 }

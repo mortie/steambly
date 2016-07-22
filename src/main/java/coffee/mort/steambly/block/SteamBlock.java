@@ -21,7 +21,7 @@ import net.minecraft.world.IBlockAccess;
 
 abstract public class SteamBlock extends SteamblyBlock {
 	SteamBlock(String name) {
-		super(Material.IRON, name);
+		super(name);
 	}
 
 	@Override

@@ -3,6 +3,10 @@ itemGroup.steambly=Steambly
 tile.steambly.creative_generator.name=Creative Generator
 tile.steambly.basic_steam_pipe.name=Basic Steam Pipe
 tile.steambly.conveyor_belt.name=Conveyor Belt
+tile.steambly.chromium_block.name=Chromium Block
+tile.steambly.hydrosteel_block.name=Hydrosteel Block
+tile.steambly.nichrome_block.name=Nichrome Block
+tile.steambly.nickel_block.name=Nickel Block
 
 item.steambly.chromium_ingot.name=Chromium Ingot
 item.steambly.hydrosteel_ingot.name=Hydrosteel Ingot

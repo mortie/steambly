@@ -9,6 +9,10 @@ import coffee.mort.steambly.proxy.CommonProxy;
 import coffee.mort.steambly.block.CreativeGeneratorBlock;
 import coffee.mort.steambly.block.ConveyorBeltBlock;
 import coffee.mort.steambly.block.BasicSteamPipe;
+import coffee.mort.steambly.block.ChromiumBlock;
+import coffee.mort.steambly.block.HydrosteelBlock;
+import coffee.mort.steambly.block.NichromeBlock;
+import coffee.mort.steambly.block.NickelBlock;
 
 // Items
 import coffee.mort.steambly.item.ChromiumIngotItem;
@@ -68,6 +72,10 @@ public class Steambly {
 	public static SteamblyBlock blockCreativeGenerator;
 	public static SteamblyBlock blockConveyorBelt;
 	public static SteamblyBlock blockBasicSteamPipe;
+	public static SteamblyBlock blockChromium;
+	public static SteamblyBlock blockHydrosteel;
+	public static SteamblyBlock blockNichrome;
+	public static SteamblyBlock blockNickel;
 
 	// Items
 	public static SteamblyItem itemChromiumIngot;
@@ -102,6 +110,10 @@ public class Steambly {
 		blockCreativeGenerator = new CreativeGeneratorBlock();
 		blockConveyorBelt = new ConveyorBeltBlock();
 		blockBasicSteamPipe = new BasicSteamPipe();
+		blockChromium = new ChromiumBlock();
+		blockHydrosteel = new HydrosteelBlock();
+		blockNichrome = new NichromeBlock();
+		blockNickel = new NickelBlock();
 
 		// Create item singletons
 		itemChromiumIngot = new ChromiumIngotItem();
@@ -128,6 +140,10 @@ public class Steambly {
 			addRenderer(ri, blockCreativeGenerator);
 			addRenderer(ri, blockConveyorBelt);
 			addRenderer(ri, blockBasicSteamPipe);
+			addRenderer(ri, blockChromium);
+			addRenderer(ri, blockHydrosteel);
+			addRenderer(ri, blockNichrome);
+			addRenderer(ri, blockNickel);
 
 			// Items
 			addRenderer(ri, itemChromiumIngot);
@@ -138,7 +154,6 @@ public class Steambly {
 			addRenderer(ri, itemHydrosteelPlate);
 			addRenderer(ri, itemNichromePlate);
 			addRenderer(ri, itemNickelPlate);
-			addRenderer(ri, itemNickelIngot);
 		}
 	}
 }
