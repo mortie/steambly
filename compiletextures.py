@@ -101,5 +101,6 @@ def exportdir(d):
 
 exportdir("blocks")
 exportdir("items")
+exportdir("other")
 
 q.run();

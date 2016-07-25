@@ -1,6 +1,7 @@
 package coffee.mort.steambly.tileentity;
 
 import coffee.mort.steambly.block.ConveyorBeltBlock;
+import coffee.mort.steambly.util.InvUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -30,10 +32,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventory {
-	private static final int moveItemTimeout = 4;
+	private static final int moveItemTimeout = 8;
 
-	private int moveItemCounter = moveItemTimeout;
-	public ItemStack[] slots = new ItemStack[8];
+	private int moveItemCounter = 0;
+	public ItemStack[] slots = new ItemStack[4];
+	public int animationCounter = 0;
+	public boolean movingItems = false;
 
 	public ConveyorBeltTileEntity() {}
 
@@ -124,49 +128,30 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 			}
 		}
 
-		if (moved)
+		if (moved) {
+			movingItems = true;
 			syncToClient();
+		} else if (movingItems) {
+			movingItems = false;
+			syncToClient();
+		}
 	}
 
 	private void moveItems() {
 		ItemStack stack = slots[0];
-		slots[0] = null;
 
 		if (stack == null)
 			return;
-
-		boolean success = false;
 
 		// Put stack in inventory if it exists
 		BlockPos frontpos = getPosInFront();
 		TileEntity te = getWorld().getTileEntity(frontpos);
 		if (te instanceof IInventory) {
 			IInventory inv = (IInventory)te;
-			int idx = -1;
-			for (int i = inv.getSizeInventory() - 1; i >= 0; --i) {
-				if (inv.isItemValidForSlot(i, stack)) {
-					idx = i;
-					break;
-				}
-			}
+			slots[0] = InvUtils.insertInto(stack, inv);
 
-			if (idx != -1) {
-				success = true;
-
-				ItemStack nwstack = new ItemStack(
-					stack.getItem(), stack.stackSize);
-				ItemStack existing = inv.getStackInSlot(idx);
-
-				if (existing != null) {
-					nwstack.stackSize += existing.stackSize;
-				}
-
-				inv.setInventorySlotContents(idx, nwstack);
-			}
-		}
-
-		// Drop item if it couldn't be placed in inventory
-		if (!success) {
+		// Drop item if there's no inventory
+		} else {
 			EntityItem dropped = new EntityItem(
 				getWorld(),
 				frontpos.getX() + 0.5D,
@@ -186,9 +171,11 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 	private void captureDroppedItems() {
 		List<EntityItem> items = getWorld().<EntityItem>getEntitiesWithinAABB(
-			EntityItem.class, new AxisAlignedBB(
+			EntityItem.class,
+			new AxisAlignedBB(
 				pos.getX() - 0.5D, pos.getY(), pos.getZ() - 0.5D,
-				pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D));
+				pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D),
+			EntitySelectors.IS_ALIVE);
 
 		for (EntityItem item: items) {
 			ItemStack stack = item.getEntityItem().copy();
@@ -216,12 +203,18 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 	@Override
 	public void update() {
-		moveItemCounter -= 1;
-		if (moveItemCounter <= 0 && !getWorld().isRemote) {
-			moveItemCounter = moveItemTimeout;
+		if (getWorld().isRemote) {
+			super.update();
+			return;
+		}
 
-			captureDroppedItems();
+		moveItemCounter += 1;
+		if (moveItemCounter >= moveItemTimeout) {
+			moveItemCounter = 0;
+
 			moveItems();
+		} else if (moveItemCounter == 1) {
+			captureDroppedItems();
 			updateInventory();
 		}
 
@@ -244,6 +237,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 				slots[j] = ItemStack.loadItemStackFromNBT(c);
 			}
 		}
+
+		movingItems = nbt.getByte("movingItems") == 0;
 	}
 
 	@Override
@@ -264,6 +259,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 		nbt.setTag("slots", slotslist);
 
+		nbt.setByte("movingItems", (byte)(movingItems ? 1 : 0));
+
 		return nbt;
 	}
 
@@ -274,12 +271,12 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return 1;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return slots[index];
+		return slots[slots.length - 1];
 	}
 
 	@Override
@@ -290,15 +287,15 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 
 	@Override
 	public @Nullable ItemStack removeStackFromSlot(int index) {
-		ItemStack s = slots[index];
+		ItemStack s = slots[slots.length - 1];
 		slots[index] = null;
 		return s;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-		markDirty();
 		slots[slots.length - 1] = stack;
+		syncToClient();
 	}
 
 	@Override
