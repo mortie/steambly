@@ -1,0 +1,21 @@
+{
+	"forge_marker": 1,
+
+	"defaults": {
+		"model": "minecraft:cube",
+
+		"textures": {
+			"up": "steambly:blocks/crafting_presser_top",
+			"down": "steambly:blocks/plate_presser_bottom",
+			"north": "steambly:blocks/plate_presser_sides",
+			"south": "steambly:blocks/plate_presser_sides",
+			"east": "steambly:blocks/plate_presser_sides",
+			"west": "steambly:blocks/plate_presser_sides",
+			"particle": "steambly:blocks/crafting_presser_top"
+		}
+	},
+	"variants": {
+		"normal": { "model": "minecraft:cube" },
+		"inventory": { "model": "minecraft:cube" }
+	}
+}

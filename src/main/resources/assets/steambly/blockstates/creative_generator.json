@@ -11,7 +11,7 @@
 			"south": "steambly:blocks/creative_generator_sides",
 			"east": "steambly:blocks/creative_generator_sides",
 			"west": "steambly:blocks/creative_generator_sides",
-			"particle": "steambly:blocks/creative_generator_sides"
+			"particle": "steambly:blocks/creative_generator_top"
 		}
 	},
 	"variants": {

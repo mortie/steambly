@@ -13,6 +13,8 @@ import coffee.mort.steambly.block.ChromiumBlock;
 import coffee.mort.steambly.block.HydrosteelBlock;
 import coffee.mort.steambly.block.NichromeBlock;
 import coffee.mort.steambly.block.NickelBlock;
+import coffee.mort.steambly.block.PlatePresserBlock;
+import coffee.mort.steambly.block.CraftingPresserBlock;
 
 // Items
 import coffee.mort.steambly.item.ChromiumIngotItem;
@@ -76,6 +78,8 @@ public class Steambly {
 	public static SteamblyBlock blockHydrosteel;
 	public static SteamblyBlock blockNichrome;
 	public static SteamblyBlock blockNickel;
+	public static SteamblyBlock blockPlatePresser;
+	public static SteamblyBlock blockCraftingPresser;
 
 	// Items
 	public static SteamblyItem itemChromiumIngot;
@@ -114,6 +118,8 @@ public class Steambly {
 		blockHydrosteel = new HydrosteelBlock();
 		blockNichrome = new NichromeBlock();
 		blockNickel = new NickelBlock();
+		blockPlatePresser = new PlatePresserBlock();
+		blockCraftingPresser = new CraftingPresserBlock();
 
 		// Create item singletons
 		itemChromiumIngot = new ChromiumIngotItem();
@@ -144,6 +150,8 @@ public class Steambly {
 			addRenderer(ri, blockHydrosteel);
 			addRenderer(ri, blockNichrome);
 			addRenderer(ri, blockNickel);
+			addRenderer(ri, blockPlatePresser);
+			addRenderer(ri, blockCraftingPresser);
 
 			// Items
 			addRenderer(ri, itemChromiumIngot);

@@ -7,6 +7,8 @@ tile.steambly.chromium_block.name=Chromium Block
 tile.steambly.hydrosteel_block.name=Hydrosteel Block
 tile.steambly.nichrome_block.name=Nichrome Block
 tile.steambly.nickel_block.name=Nickel Block
+tile.steambly.plate_presser.name=Plate Presser
+tile.steambly.crafting_presser.name=Crafting Presser
 
 item.steambly.chromium_ingot.name=Chromium Ingot
 item.steambly.hydrosteel_ingot.name=Hydrosteel Ingot
