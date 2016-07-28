@@ -28,8 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventory {
 	private static final int moveItemTimeout = 8;
@@ -79,14 +77,14 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 			EnumFacing facing = state.getValue(ConveyorBeltBlock.FACING);
 
 			for (int i = 0; i < slots.length; ++i) {
-				double x = tx;
-				double y = ty;
-				double z = tz;
-
 				ItemStack s = slots[i];
 
 				if (s == null)
 					continue;
+
+				double x = tx;
+				double y = ty;
+				double z = tz;
 
 				if (turning == ConveyorBeltBlock.TurningType.STRAIGHT) {
 					double offset = (double)(i + 1) / (double)slots.length;
@@ -173,8 +171,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 		List<EntityItem> items = getWorld().<EntityItem>getEntitiesWithinAABB(
 			EntityItem.class,
 			new AxisAlignedBB(
-				pos.getX() - 0.5D, pos.getY(), pos.getZ() - 0.5D,
-				pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D),
+				pos.getX() - 0.4D, pos.getY(), pos.getZ() - 0.4D,
+				pos.getX() + 0.4D, pos.getY() + 1.5D, pos.getZ() + 0.4D),
 			EntitySelectors.IS_ALIVE);
 
 		for (EntityItem item: items) {
