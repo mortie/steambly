@@ -85,13 +85,13 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 					continue;
 
 				double x = tx;
-				double y = ty;
+				double y = ty + 0.4;
 				double z = tz;
 
 				if (turning == ConveyorBeltBlock.TurningType.STRAIGHT) {
 					double offset = (double)(i) / (double)slots.length;
 					offset -= te.animationCounter / 32D;
-					offset -= 2 / 32D;
+					offset += 3 / 32D;
 
 					if (facing == EnumFacing.SOUTH) {
 						z = z + 1 - offset;
@@ -112,7 +112,7 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 				}
 
 				GlStateManager.pushMatrix();
-				GlStateManager.translate(x, y + 0.5, z);
+				GlStateManager.translate(x, y, z);
 				Minecraft.getMinecraft().getRenderItem().renderItem(
 					s, ItemCameraTransforms.TransformType.GROUND);
 				GlStateManager.popMatrix();

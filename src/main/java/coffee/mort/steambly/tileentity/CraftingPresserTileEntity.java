@@ -142,7 +142,7 @@ public class CraftingPresserTileEntity extends PresserTileEntity {
 					continue;
 
 				double x = tx + 0.5;
-				double y = ty + 1.04;
+				double y = ty + 1.01;
 				double z = tz + 0.5;
 
 				x += ((i % 3) - 1) * 0.19;
@@ -156,17 +156,27 @@ public class CraftingPresserTileEntity extends PresserTileEntity {
 					ItemStack s = te.recipe[i];
 
 					GlStateManager.pushMatrix();
-					GlStateManager.translate(x, y, z);
-					GlStateManager.scale(0.4, 0.4, 0.4);
+
+					if (j == 0)
+						GlStateManager.translate(x, y, z - 0.056);
+					else
+						GlStateManager.translate(x, y, z);
+
+					if (j == 0)
+						GlStateManager.rotate(90F, 1F, 0F, 0F);
+
+					GlStateManager.scale(0.3, 0.3, 0.3);
 					Minecraft.getMinecraft().getRenderItem().renderItem(
 						s, ItemCameraTransforms.TransformType.GROUND);
 					GlStateManager.popMatrix();
 
-					y += 0.06;
-					if (j == 0)
+					y += 0.08;
+					if (j == 0) {
 						z += 0.01;
-					else
+						y -= 0.025;
+					} else {
 						z += (j % 2 == 0 ? 0.02 : -0.02);
+					}
 				}
 			}
 		}
