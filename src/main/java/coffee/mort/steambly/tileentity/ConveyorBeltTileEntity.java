@@ -84,39 +84,53 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 				if (s == null)
 					continue;
 
-				double x = tx;
-				double y = ty + 0.4;
-				double z = tz;
+				double offset;
 
 				if (turning == ConveyorBeltBlock.TurningType.STRAIGHT) {
-					double offset = (double)(i) / (double)slots.length;
+					offset = (double)(i) / (double)slots.length;
 					offset -= te.animationCounter / 32D;
 					offset += 3 / 32D;
-
-					if (facing == EnumFacing.SOUTH) {
-						z = z + 1 - offset;
-						x += 0.5;
-					} else if (facing == EnumFacing.NORTH) {
-						z += offset;
-						x += 0.5;
-					} else if (facing == EnumFacing.EAST) {
-						x = x + 1 - offset;
-						z += 0.5;
-					} else if (facing == EnumFacing.WEST) {
-						x += offset;
-						z += 0.5;
-					}
 				} else {
-					x += 0.5;
-					z += 0.5;
+					offset = 0.5;
 				}
 
-				GlStateManager.pushMatrix();
-				GlStateManager.translate(x, y, z);
-				Minecraft.getMinecraft().getRenderItem().renderItem(
-					s, ItemCameraTransforms.TransformType.GROUND);
-				GlStateManager.popMatrix();
+				draw(s, tx, ty, tz, offset, facing);
 			}
+
+			if (!te.movingItems && te.insertSlot != null) {
+				System.out.println("drawing insert slot");
+				draw(te.insertSlot, tx, ty, tz, 1, facing);
+			}
+		}
+
+		private void draw(
+				ItemStack stack,
+				double tx, double ty, double tz,
+				double offset, EnumFacing facing) {
+
+			double x = tx;
+			double y = ty + 0.4;
+			double z = tz;
+
+			if (facing == EnumFacing.SOUTH) {
+				z = z + 1 - offset;
+				x += 0.5;
+			} else if (facing == EnumFacing.NORTH) {
+				z += offset;
+				x += 0.5;
+			} else if (facing == EnumFacing.EAST) {
+				x = x + 1 - offset;
+				z += 0.5;
+			} else if (facing == EnumFacing.WEST) {
+				x += offset;
+				z += 0.5;
+			}
+
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(x, y, z);
+			Minecraft.getMinecraft().getRenderItem().renderItem(
+				stack, ItemCameraTransforms.TransformType.GROUND);
+			GlStateManager.popMatrix();
 		}
 	}
 
@@ -262,6 +276,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 			}
 		}
 
+		if (nbt.getByte("hasInsertSlot") != 0)
+			insertSlot = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("insertSlot"));
 		movingItems = nbt.getByte("movingItems") != 0;
 	}
 
@@ -284,6 +300,15 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 		nbt.setTag("slots", slotslist);
 
 		nbt.setByte("movingItems", (byte)(movingItems ? 1 : 0));
+
+		if (insertSlot == null) {
+			nbt.setByte("hasInsertSlot", (byte)0);
+		} else {
+			nbt.setByte("hasInsertSlot", (byte)1);
+			NBTTagCompound c = new NBTTagCompound();
+			insertSlot.writeToNBT(c);
+			nbt.setTag("insertSlot", c);
+		}
 
 		return nbt;
 	}
@@ -312,7 +337,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	@Override
 	public @Nullable ItemStack removeStackFromSlot(int index) {
 		ItemStack s = insertSlot;
-		slots[index] = null;
+		insertSlot = null;
+		syncToClient();
 		return s;
 	}
 
@@ -333,10 +359,10 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {};
+	public void openInventory(EntityPlayer player) {}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {};
+	public void closeInventory(EntityPlayer player) {}
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {

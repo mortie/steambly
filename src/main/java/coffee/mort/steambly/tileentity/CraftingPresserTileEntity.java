@@ -1,22 +1,26 @@
 package coffee.mort.steambly.tileentity;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 
-public class CraftingPresserTileEntity extends PresserTileEntity {
+public class CraftingPresserTileEntity extends PresserTileEntity implements IInventory {
 	public ItemStack[] recipe = new ItemStack[9];
 	public ItemStack[] slots = new ItemStack[recipe.length];
 
-	public final int maxSlotSize = 4;;
+	public final int maxSlotSize = 1;
 
 	private int getSlot(float x, float y, float z) {
 		float s = 0.375F;
@@ -172,10 +176,7 @@ public class CraftingPresserTileEntity extends PresserTileEntity {
 
 					y += 0.08;
 					if (j == 0) {
-						z += 0.01;
 						y -= 0.025;
-					} else {
-						z += (j % 2 == 0 ? 0.02 : -0.02);
 					}
 				}
 			}
@@ -241,10 +242,102 @@ public class CraftingPresserTileEntity extends PresserTileEntity {
 		return nbt;
 	}
 
-	private void clear() {
+	@Override
+	public int getSizeInventory() {
+		return recipe.length;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int index) {
+		return slots[index];
+	}
+
+	@Override
+	public @Nullable ItemStack decrStackSize(int index, int count) {
+		if (slots[index] == null)
+			return null;
+
+		ItemStack stack = new ItemStack(slots[index].getItem());
+		if (slots[index].stackSize == 1)
+			slots[index] = null;
+		else
+			slots[index].stackSize -= 1;
+
+		syncToClient();
+		return stack;
+	}
+
+	@Override
+	public @Nullable ItemStack removeStackFromSlot(int index) {
+		ItemStack stack = slots[index];
+		slots[index] = null;
+		syncToClient();
+		return stack;
+	}
+
+	@Override
+	public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
+		slots[index] = stack;
+		syncToClient();
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return maxSlotSize;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		return false;
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {}
+
+	@Override
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		if (recipe[index] == null || stack == null)
+			return false;
+
+		return recipe[index].getItem() == stack.getItem();
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
 		for (int i = 0; i < recipe.length; ++i) {
 			recipe[i] = null;
 			slots[i] = null;
 		}
+	}
+
+	@Override
+	public String getName() {
+		return "container.crafting_presser";
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return null;
 	}
 }
