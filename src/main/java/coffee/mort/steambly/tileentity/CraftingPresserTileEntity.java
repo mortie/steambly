@@ -71,8 +71,6 @@ public class CraftingPresserTileEntity extends PresserTileEntity {
 			} else {
 				if (stack.getItem() != heldItem.getItem())
 					return true;
-				if (stack.stackSize >= stack.getMaxStackSize())
-					return true;
 				if (stack.stackSize >= maxSlotSize)
 					return true;
 
@@ -147,12 +145,8 @@ public class CraftingPresserTileEntity extends PresserTileEntity {
 				double y = ty + 1.04;
 				double z = tz + 0.5;
 
-				x += ((i % 3) - 1) * 0.18;
-				z += ((i / 3) - 1) * 0.18;
-
-				// Blocks are higher than items for whatever reason
-				if (te.recipe[i].getItem() instanceof ItemBlock)
-					y -= 0.08;
+				x += ((i % 3) - 1) * 0.19;
+				z += ((i / 3) - 1) * 0.19;
 
 				int len = 1;
 				if (te.slots[i] != null)
