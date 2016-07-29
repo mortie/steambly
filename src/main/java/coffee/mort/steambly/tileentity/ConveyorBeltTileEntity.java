@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -28,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventory {
 	private static final int moveItemTimeout = 8;
@@ -61,7 +61,6 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 	}
 
 	public static class CustomRenderer extends TileEntitySpecialRenderer<ConveyorBeltTileEntity> {
-		public CustomRenderer() {}
 
 		@Override
 		public void renderTileEntityAt(
@@ -107,11 +106,11 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 					z += 0.5;
 				}
 
-				GL11.glPushMatrix();
-				GL11.glTranslated(x, y + 0.5, z);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(x, y + 0.5, z);
 				Minecraft.getMinecraft().getRenderItem().renderItem(
 					s, ItemCameraTransforms.TransformType.GROUND);
-				GL11.glPopMatrix();
+				GlStateManager.popMatrix();
 			}
 		}
 	}

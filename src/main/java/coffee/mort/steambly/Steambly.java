@@ -30,6 +30,8 @@ import coffee.mort.steambly.item.NickelPlateItem;
 import coffee.mort.steambly.tileentity.CreativeGeneratorTileEntity;
 import coffee.mort.steambly.tileentity.ConveyorBeltTileEntity;
 import coffee.mort.steambly.tileentity.BasicSteamPipeTileEntity;
+import coffee.mort.steambly.tileentity.PlatePresserTileEntity;
+import coffee.mort.steambly.tileentity.CraftingPresserTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
@@ -109,6 +111,10 @@ public class Steambly {
 			ConveyorBeltTileEntity.class, "conveyor_belt_te");
 		GameRegistry.registerTileEntity(
 			BasicSteamPipeTileEntity.class, "basic_steam_pipe_te");
+		GameRegistry.registerTileEntity(
+			PlatePresserTileEntity.class, "plate_presser_te");
+		GameRegistry.registerTileEntity(
+			CraftingPresserTileEntity.class, "crafting_presser_te");
 
 		// Create block singletons
 		blockCreativeGenerator = new CreativeGeneratorBlock();

@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class PresserBlock extends SteamblyBlock {
+abstract public class PresserBlock extends SteamblyBlock {
 	public PresserBlock(String name) {
 		super(name);
 	}
@@ -22,6 +22,11 @@ public class PresserBlock extends SteamblyBlock {
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -44,21 +49,14 @@ public class PresserBlock extends SteamblyBlock {
 		PresserTileEntity te =
 			(PresserTileEntity)world.getTileEntity(pos);
 
-		if (te == null) {
-			System.out.println("Warning: right clicked null tile entity");
-			System.out.println(pos);
-			return false;
-		}
-
 		if (hand != EnumHand.MAIN_HAND)
 			return false;
+		if (side != EnumFacing.UP)
+			return false;
 
-		if (player.isSneaking()) {
-			return te.onShiftRightClick(player, side, heldItem, hitX, hitY, hitZ);
-		} else {
-			if (heldItem == null)
-				return false;
-			return te.onRightClick(player, side, heldItem, hitX, hitY, hitZ);
-		}
+		if (heldItem == null)
+			return te.onEmptyRightClick(player, hitX, hitY, hitZ);
+		else
+			return te.onRightClick(player, heldItem, hitX, hitY, hitZ);
 	}
 }

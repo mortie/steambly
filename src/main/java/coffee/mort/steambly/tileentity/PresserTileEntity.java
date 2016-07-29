@@ -13,14 +13,11 @@ abstract public class PresserTileEntity extends SteamblyTileEntity {
 
 	abstract public boolean onRightClick(
 			EntityPlayer player,
-			EnumFacing side,
 			ItemStack heldItem,
 			float hitX, float hitY, float hitZ);
 
-	abstract public boolean onShiftRightClick(
+	abstract public boolean onEmptyRightClick(
 			EntityPlayer player,
-			EnumFacing side,
-			ItemStack heldItem,
 			float hitX, float hitY, float hitZ);
 
 	abstract public void onPress();
