@@ -8,7 +8,7 @@ public class InvUtils {
 		if (stack == null)
 			return null;
 
-		for (int i = 0; i < inv.getInventoryStackLimit(); ++i) {
+		for (int i = 0; i < inv.getSizeInventory(); ++i) {
 			stack = insertInto(stack, i, inv);
 			if (stack == null)
 				return null;

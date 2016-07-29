@@ -13,6 +13,8 @@ import coffee.mort.steambly.block.ChromiumBlock;
 import coffee.mort.steambly.block.HydrosteelBlock;
 import coffee.mort.steambly.block.NichromeBlock;
 import coffee.mort.steambly.block.NickelBlock;
+import coffee.mort.steambly.block.PlatePresserBlock;
+import coffee.mort.steambly.block.CraftingPresserBlock;
 
 // Items
 import coffee.mort.steambly.item.ChromiumIngotItem;
@@ -28,6 +30,8 @@ import coffee.mort.steambly.item.NickelPlateItem;
 import coffee.mort.steambly.tileentity.CreativeGeneratorTileEntity;
 import coffee.mort.steambly.tileentity.ConveyorBeltTileEntity;
 import coffee.mort.steambly.tileentity.BasicSteamPipeTileEntity;
+import coffee.mort.steambly.tileentity.PlatePresserTileEntity;
+import coffee.mort.steambly.tileentity.CraftingPresserTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
@@ -76,6 +80,8 @@ public class Steambly {
 	public static SteamblyBlock blockHydrosteel;
 	public static SteamblyBlock blockNichrome;
 	public static SteamblyBlock blockNickel;
+	public static SteamblyBlock blockPlatePresser;
+	public static SteamblyBlock blockCraftingPresser;
 
 	// Items
 	public static SteamblyItem itemChromiumIngot;
@@ -105,6 +111,10 @@ public class Steambly {
 			ConveyorBeltTileEntity.class, "conveyor_belt_te");
 		GameRegistry.registerTileEntity(
 			BasicSteamPipeTileEntity.class, "basic_steam_pipe_te");
+		GameRegistry.registerTileEntity(
+			PlatePresserTileEntity.class, "plate_presser_te");
+		GameRegistry.registerTileEntity(
+			CraftingPresserTileEntity.class, "crafting_presser_te");
 
 		// Create block singletons
 		blockCreativeGenerator = new CreativeGeneratorBlock();
@@ -114,6 +124,8 @@ public class Steambly {
 		blockHydrosteel = new HydrosteelBlock();
 		blockNichrome = new NichromeBlock();
 		blockNickel = new NickelBlock();
+		blockPlatePresser = new PlatePresserBlock();
+		blockCraftingPresser = new CraftingPresserBlock();
 
 		// Create item singletons
 		itemChromiumIngot = new ChromiumIngotItem();
@@ -144,6 +156,8 @@ public class Steambly {
 			addRenderer(ri, blockHydrosteel);
 			addRenderer(ri, blockNichrome);
 			addRenderer(ri, blockNickel);
+			addRenderer(ri, blockPlatePresser);
+			addRenderer(ri, blockCraftingPresser);
 
 			// Items
 			addRenderer(ri, itemChromiumIngot);

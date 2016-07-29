@@ -1,0 +1,20 @@
+{
+	"forge_marker": 1,
+
+	"defaults": {
+		"model": "steambly:presser",
+
+		"textures": {
+			"plate_top": "steambly:blocks/crafting_presser_top",
+			"plate_bottom": "steambly:blocks/presser_sides",
+			"plate_sides": "steambly:blocks/presser_sides",
+			"stand": "steambly:blocks/presser_stand",
+			"stand_bottom": "steambly:blocks/presser_stand",
+			"particle": "steambly:blocks/crafting_presser_top"
+		}
+	},
+	"variants": {
+		"normal": { "model": "steambly:presser" },
+		"inventory": { "model": "steambly:presser" }
+	}
+}
