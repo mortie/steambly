@@ -4,6 +4,8 @@ import coffee.mort.steambly.block.SteamblyBlock;
 import coffee.mort.steambly.item.SteamblyItem;
 import coffee.mort.steambly.tileentity.SteamTileEntity;
 import coffee.mort.steambly.proxy.CommonProxy;
+import coffee.mort.steambly.worldgen.SteamblyWorldgen;
+import coffee.mort.steambly.recipes.SteamblyRecipes;
 
 // Blocks
 import coffee.mort.steambly.block.CreativeGeneratorBlock;
@@ -15,6 +17,8 @@ import coffee.mort.steambly.block.NichromeBlock;
 import coffee.mort.steambly.block.NickelBlock;
 import coffee.mort.steambly.block.PlatePresserBlock;
 import coffee.mort.steambly.block.CraftingPresserBlock;
+import coffee.mort.steambly.block.ChromiumOreBlock;
+import coffee.mort.steambly.block.NickelOreBlock;
 
 // Items
 import coffee.mort.steambly.item.ChromiumIngotItem;
@@ -82,6 +86,8 @@ public class Steambly {
 	public static SteamblyBlock blockNickel;
 	public static SteamblyBlock blockPlatePresser;
 	public static SteamblyBlock blockCraftingPresser;
+	public static SteamblyBlock blockChromiumOre;
+	public static SteamblyBlock blockNickelOre;
 
 	// Items
 	public static SteamblyItem itemChromiumIngot;
@@ -103,6 +109,9 @@ public class Steambly {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+
+		// Register worldgen
+		GameRegistry.registerWorldGenerator(new SteamblyWorldgen(), 2);
 
 		// Register tile entities
 		GameRegistry.registerTileEntity(
@@ -126,6 +135,8 @@ public class Steambly {
 		blockNickel = new NickelBlock();
 		blockPlatePresser = new PlatePresserBlock();
 		blockCraftingPresser = new CraftingPresserBlock();
+		blockChromiumOre = new ChromiumOreBlock();
+		blockNickelOre = new NickelOreBlock();
 
 		// Create item singletons
 		itemChromiumIngot = new ChromiumIngotItem();
@@ -139,6 +150,9 @@ public class Steambly {
 
 		// Register tile entity special renderers
 		proxy.registerTESR();
+
+		// Register recipes
+		SteamblyRecipes.register();
 	}
 
 	@EventHandler
@@ -158,6 +172,8 @@ public class Steambly {
 			addRenderer(ri, blockNickel);
 			addRenderer(ri, blockPlatePresser);
 			addRenderer(ri, blockCraftingPresser);
+			addRenderer(ri, blockChromiumOre);
+			addRenderer(ri, blockNickelOre);
 
 			// Items
 			addRenderer(ri, itemChromiumIngot);

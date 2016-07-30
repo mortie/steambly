@@ -8,13 +8,29 @@
 			"plate_top": "steambly:blocks/plate_presser_top",
 			"plate_bottom": "steambly:blocks/presser_sides",
 			"plate_sides": "steambly:blocks/presser_sides",
+			"plate_side_back": "steambly:blocks/presser_side_back",
 			"stand": "steambly:blocks/presser_stand",
 			"stand_bottom": "steambly:blocks/presser_stand",
 			"particle": "steambly:blocks/plate_presser_top"
 		}
 	},
 	"variants": {
-		"normal": { "model": "steambly:presser" },
-		"inventory": { "model": "steambly:presser" }
+		"inventory": { "model": "steambly:presser" },
+
+		"facing=north": {
+			"model": "steambly:presser"
+		},
+		"facing=south": {
+			"model": "steambly:presser",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "steambly:presser",
+			"y": 270
+		},
+		"facing=east": {
+			"model": "steambly:presser",
+			"y": 90
+		}
 	}
 }

@@ -174,7 +174,7 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 			}
 
 		// Drop item if there's no inventory
-		} else {
+		} else if (getWorld().isAirBlock(frontpos)) {
 			slots[0] = null;
 			EntityItem dropped = new EntityItem(
 				getWorld(),
@@ -190,6 +190,8 @@ public class ConveyorBeltTileEntity extends SteamTileEntity implements IInventor
 			getWorld().spawnEntityInWorld(dropped);
 
 			movingItems = true;
+		} else {
+			movingItems = false;
 		}
 	}
 

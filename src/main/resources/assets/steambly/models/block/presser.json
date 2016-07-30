@@ -7,7 +7,7 @@
 			"faces": {
 				"up":    { "texture": "#plate_top" },
 				"down":  { "texture": "#plate_bottom" },
-				"north": { "texture": "#plate_sides" },
+				"north": { "texture": "#plate_side_back" },
 				"south": { "texture": "#plate_sides" },
 				"west":  { "texture": "#plate_sides" },
 				"east":  { "texture": "#plate_sides" }

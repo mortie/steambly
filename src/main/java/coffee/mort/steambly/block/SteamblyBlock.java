@@ -2,11 +2,17 @@ package coffee.mort.steambly.block;
 
 import coffee.mort.steambly.Steambly;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.world.World;
 
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,6 +25,7 @@ public abstract class SteamblyBlock extends Block {
 		super(m);
 
 		this.name = name;
+		setHardness(2F);
 
 		setUnlocalizedName(Steambly.MODID+"."+name);
 		setRegistryName(Steambly.MODID+":"+name);
@@ -34,5 +41,18 @@ public abstract class SteamblyBlock extends Block {
 		this(Material.IRON, name);
 	}
 
-	public String getName() { return name; }
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public int quantityDropped(Random rand) {
+		return 1;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+		return new ItemStack(this);
+	}
 }

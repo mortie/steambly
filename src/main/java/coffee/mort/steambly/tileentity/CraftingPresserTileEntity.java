@@ -2,23 +2,31 @@ package coffee.mort.steambly.tileentity;
 
 import javax.annotation.Nullable;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Container;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class CraftingPresserTileEntity extends PresserTileEntity implements IInventory {
-	public ItemStack[] recipe = new ItemStack[9];
-	public ItemStack[] slots = new ItemStack[recipe.length];
+
+	public InventoryCrafting recipe = new InventoryCrafting(
+			new CraftingContainer(), 3, 3);
+	public ItemStack recipeResult = null;
+	public ItemStack[] slots = new ItemStack[recipe.getSizeInventory()];
 
 	public final int maxSlotSize = 1;
 
@@ -66,9 +74,13 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 		if (slot == -1)
 			return false;
 
-		if (recipe[slot] == null) {
-			recipe[slot] = new ItemStack(heldItem.getItem());
-		} else if (recipe[slot].getItem() == heldItem.getItem()) {
+		// Add recipe item
+		if (recipe.getStackInSlot(slot) == null) {
+			recipe.setInventorySlotContents(slot, new ItemStack(heldItem.getItem()));
+			recipeResult = CraftingManager.getInstance().findMatchingRecipe(recipe, getWorld());
+
+		// Add slot item
+		} else if (recipe.getStackInSlot(slot).getItem() == heldItem.getItem()) {
 			ItemStack stack = slots[slot];
 			if (stack == null) {
 				slots[slot] = new ItemStack(heldItem.getItem());
@@ -100,7 +112,7 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 		if (slot == -1)
 			return true;
 
-		if (recipe[slot] == null)
+		if (recipe.getStackInSlot(slot) == null)
 			return true;
 
 		ItemStack stack;
@@ -110,8 +122,8 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 			if (slots[slot].stackSize <= 0)
 				slots[slot] = null;
 		} else {
-			stack = new ItemStack(recipe[slot].getItem());
-			recipe[slot] = null;
+			recipe.removeStackFromSlot(slot);
+			recipeResult = CraftingManager.getInstance().findMatchingRecipe(recipe, getWorld());
 			return true;
 		}
 
@@ -133,6 +145,13 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 	@Override
 	public void onPress() {}
 
+	private class CraftingContainer extends Container {
+		@Override
+		public boolean canInteractWith(EntityPlayer player) {
+			return false;
+		}
+	}
+
 	public static class CustomRenderer extends TileEntitySpecialRenderer<CraftingPresserTileEntity> {
 
 		@Override
@@ -141,8 +160,9 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 				double tx, double ty, double tz,
 				float partialTicks, int destroyStage) {
 
-			for (int i = 0; i < te.recipe.length; ++i) {
-				if (te.recipe[i] == null)
+			for (int i = 0; i < te.recipe.getSizeInventory(); ++i) {
+				ItemStack s = te.recipe.getStackInSlot(i);
+				if (s == null)
 					continue;
 
 				double x = tx + 0.5;
@@ -157,8 +177,6 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 					len += te.slots[i].stackSize;
 
 				for (int j = 0; j < len; ++j) {
-					ItemStack s = te.recipe[i];
-
 					GlStateManager.pushMatrix();
 
 					if (j == 0)
@@ -180,6 +198,15 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 					}
 				}
 			}
+
+			if (te.recipeResult != null) {
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(tx + 0.5, ty + 1.3, tz + 0.5);
+				GlStateManager.scale(0.9, 0.9, 0.9);
+				Minecraft.getMinecraft().getRenderItem().renderItem(
+					te.recipeResult, ItemCameraTransforms.TransformType.GROUND);
+				GlStateManager.popMatrix();
+			}
 		}
 	}
 
@@ -196,8 +223,9 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 			NBTTagCompound c = recipelist.getCompoundTagAt(i);
 
 			int j = c.getByte("slot") & 255;
-			if (j >= 0 && j < recipe.length) {
-				recipe[j] = ItemStack.loadItemStackFromNBT(c);
+			if (j >= 0 && j < recipe.getSizeInventory()) {
+				recipe.setInventorySlotContents(
+					j, ItemStack.loadItemStackFromNBT(c));
 			}
 		}
 
@@ -209,6 +237,8 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 				slots[j] = ItemStack.loadItemStackFromNBT(c);
 			}
 		}
+
+		recipeResult = CraftingManager.getInstance().findMatchingRecipe(recipe, getWorld());
 	}
 
 	@Override
@@ -218,13 +248,13 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 		NBTTagList recipelist = new NBTTagList();
 		NBTTagList slotslist = new NBTTagList();
 
-		for (int i = 0; i < recipe.length; ++i) {
-			if (recipe[i] == null)
+		for (int i = 0; i < recipe.getSizeInventory(); ++i) {
+			if (recipe.getStackInSlot(i) == null)
 				continue;
 
 			NBTTagCompound r = new NBTTagCompound();
 			r.setByte("slot", (byte)i);
-			recipe[i].writeToNBT(r);
+			recipe.getStackInSlot(i).writeToNBT(r);
 			recipelist.appendTag(r);
 
 			if (slots[i] == null)
@@ -244,7 +274,7 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 
 	@Override
 	public int getSizeInventory() {
-		return recipe.length;
+		return recipe.getSizeInventory();
 	}
 
 	@Override
@@ -299,10 +329,10 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (recipe[index] == null || stack == null)
+		if (recipe.getStackInSlot(index) == null || stack == null)
 			return false;
 
-		return recipe[index].getItem() == stack.getItem();
+		return recipe.getStackInSlot(index).getItem() == stack.getItem();
 	}
 
 	@Override
@@ -320,10 +350,10 @@ public class CraftingPresserTileEntity extends PresserTileEntity implements IInv
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < recipe.length; ++i) {
-			recipe[i] = null;
+		for (int i = 0; i < slots.length; ++i) {
 			slots[i] = null;
 		}
+		recipe.clear();
 	}
 
 	@Override
