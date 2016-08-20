@@ -9,16 +9,20 @@ import coffee.mort.steambly.recipes.SteamblyRecipes;
 
 // Blocks
 import coffee.mort.steambly.block.CreativeGeneratorBlock;
-import coffee.mort.steambly.block.ConveyorBeltBlock;
 import coffee.mort.steambly.block.BasicSteamPipe;
+
+import coffee.mort.steambly.block.ConveyorBeltBlock;
+import coffee.mort.steambly.block.PlatePresserBlock;
+import coffee.mort.steambly.block.CraftingPresserBlock;
+import coffee.mort.steambly.block.PneumaticPressBaseBlock;
+
+import coffee.mort.steambly.block.ChromiumOreBlock;
+import coffee.mort.steambly.block.NickelOreBlock;
+
 import coffee.mort.steambly.block.ChromiumBlock;
 import coffee.mort.steambly.block.HydrosteelBlock;
 import coffee.mort.steambly.block.NichromeBlock;
 import coffee.mort.steambly.block.NickelBlock;
-import coffee.mort.steambly.block.PlatePresserBlock;
-import coffee.mort.steambly.block.CraftingPresserBlock;
-import coffee.mort.steambly.block.ChromiumOreBlock;
-import coffee.mort.steambly.block.NickelOreBlock;
 
 // Items
 import coffee.mort.steambly.item.ChromiumIngotItem;
@@ -36,6 +40,7 @@ import coffee.mort.steambly.tileentity.ConveyorBeltTileEntity;
 import coffee.mort.steambly.tileentity.BasicSteamPipeTileEntity;
 import coffee.mort.steambly.tileentity.PlatePresserTileEntity;
 import coffee.mort.steambly.tileentity.CraftingPresserTileEntity;
+import coffee.mort.steambly.tileentity.PneumaticPressTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
@@ -78,16 +83,20 @@ public class Steambly {
 
 	// Blocks
 	public static SteamblyBlock blockCreativeGenerator;
-	public static SteamblyBlock blockConveyorBelt;
 	public static SteamblyBlock blockBasicSteamPipe;
+
+	public static SteamblyBlock blockConveyorBelt;
+	public static SteamblyBlock blockPlatePresser;
+	public static SteamblyBlock blockCraftingPresser;
+	public static SteamblyBlock blockPneumaticPressBase;
+
+	public static SteamblyBlock blockChromiumOre;
+	public static SteamblyBlock blockNickelOre;
+
 	public static SteamblyBlock blockChromium;
 	public static SteamblyBlock blockHydrosteel;
 	public static SteamblyBlock blockNichrome;
 	public static SteamblyBlock blockNickel;
-	public static SteamblyBlock blockPlatePresser;
-	public static SteamblyBlock blockCraftingPresser;
-	public static SteamblyBlock blockChromiumOre;
-	public static SteamblyBlock blockNickelOre;
 
 	// Items
 	public static SteamblyItem itemChromiumIngot;
@@ -124,19 +133,25 @@ public class Steambly {
 			PlatePresserTileEntity.class, "plate_presser_te");
 		GameRegistry.registerTileEntity(
 			CraftingPresserTileEntity.class, "crafting_presser_te");
+		GameRegistry.registerTileEntity(
+			PneumaticPressTileEntity.class, "pneumatic_press_te");
 
 		// Create block singletons
 		blockCreativeGenerator = new CreativeGeneratorBlock();
-		blockConveyorBelt = new ConveyorBeltBlock();
 		blockBasicSteamPipe = new BasicSteamPipe();
+
+		blockConveyorBelt = new ConveyorBeltBlock();
+		blockPlatePresser = new PlatePresserBlock();
+		blockCraftingPresser = new CraftingPresserBlock();
+		blockPneumaticPressBase = new PneumaticPressBaseBlock();
+
+		blockChromiumOre = new ChromiumOreBlock();
+		blockNickelOre = new NickelOreBlock();
+
 		blockChromium = new ChromiumBlock();
 		blockHydrosteel = new HydrosteelBlock();
 		blockNichrome = new NichromeBlock();
 		blockNickel = new NickelBlock();
-		blockPlatePresser = new PlatePresserBlock();
-		blockCraftingPresser = new CraftingPresserBlock();
-		blockChromiumOre = new ChromiumOreBlock();
-		blockNickelOre = new NickelOreBlock();
 
 		// Create item singletons
 		itemChromiumIngot = new ChromiumIngotItem();
@@ -164,16 +179,20 @@ public class Steambly {
 
 			// Blocks
 			addRenderer(ri, blockCreativeGenerator);
-			addRenderer(ri, blockConveyorBelt);
 			addRenderer(ri, blockBasicSteamPipe);
+
+			addRenderer(ri, blockConveyorBelt);
+			addRenderer(ri, blockPlatePresser);
+			addRenderer(ri, blockCraftingPresser);
+			addRenderer(ri, blockPneumaticPressBase);
+
+			addRenderer(ri, blockChromiumOre);
+			addRenderer(ri, blockNickelOre);
+
 			addRenderer(ri, blockChromium);
 			addRenderer(ri, blockHydrosteel);
 			addRenderer(ri, blockNichrome);
 			addRenderer(ri, blockNickel);
-			addRenderer(ri, blockPlatePresser);
-			addRenderer(ri, blockCraftingPresser);
-			addRenderer(ri, blockChromiumOre);
-			addRenderer(ri, blockNickelOre);
 
 			// Items
 			addRenderer(ri, itemChromiumIngot);

@@ -1,7 +1,6 @@
 package coffee.mort.steambly.tileentity;
 
 public class CreativeGeneratorTileEntity extends SteamTileEntity {
-	public CreativeGeneratorTileEntity() {}
 
 	@Override
 	public int getSteamVolume() {

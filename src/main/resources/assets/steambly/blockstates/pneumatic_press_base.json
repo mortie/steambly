@@ -1,0 +1,29 @@
+{
+	"forge_marker": 1,
+
+	"defaults": {
+		"uvlock": true,
+		"model": "steambly:pneumatic_press",
+
+		"textures": {
+			"top": "steambly:blocks/pneumatic_press_top",
+			"bottom": "minecraft:blocks/piston_bottom",
+			"front": "steambly:blocks/pneumatic_press_window",
+			"back": "steambly:blocks/pneumatic_press_back",
+			"sides": "steambly:blocks/pneumatic_press_input"
+		}
+	},
+
+	"variants": {
+		"inventory": { "model": "steambly:pneumatic_press" },
+
+		"extended=true": {
+			"model": "steambly:pneumatic_press"
+		},
+
+		"extended=false": {
+			"model": "steambly:pneumatic_press"
+		}
+	}
+}
+
